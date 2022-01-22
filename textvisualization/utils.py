@@ -10,13 +10,18 @@ from typing import Any, Dict, List, Optional, Union
 from django.core.files.uploadedfile import UploadedFile
 import os
 
+# Importing the StringIO module.
+from io import StringIO
+
 import matplotlib.pyplot as plt
 import nltk
 import numpy as np
 import pandas as pd
 from nltk import FreqDist, ngrams, word_tokenize
 from PIL import Image
-from wordcloud import WordCloud
+from wordcloud import WordCloud, STOPWORDS
+
+stopwords = set(STOPWORDS)
 
 
 def create_text(
@@ -59,6 +64,7 @@ def create_text(
 
 def show_wordcloud(data: Optional[Union[List[str], str]]) -> Optional[Image.Image]:
     """Convert matplotlib data to image."""
+    print(data, "DATA")
     try:
         wordcloud = WordCloud(
             background_color="white",
@@ -66,19 +72,21 @@ def show_wordcloud(data: Optional[Union[List[str], str]]) -> Optional[Image.Imag
             max_font_size=40,
             scale=3,
             random_state=0,
-        )
-        wordcloud.generate(str(data))
+            stopwords=stopwords,
+        ).generate(str(data))
 
-        plt.imshow(wordcloud, interpolation="bilinear")
-        plt.axis("off")
+        # plt.imshow(wordcloud, interpolation="bilinear")
+        # plt.axis("off")
 
-        image = io.BytesIO()
-        plt.savefig(image, format="png")
-        image.seek(0)  # rewind the data
-        string = base64.b64encode(image.read())
+        # image = io.BytesIO()
+        # # plt.savefig(image, format="png")
+        # image.seek(0)  # rewind the data
+        # string = base64.b64encode(image.read())
 
-        image_64 = "data:image/png;base64," + urllib.parse.quote(string)
-        return image_64
+        # image_64 = "data:image/png;base64," + urllib.parse.quote(string)
+        # return image_64
+
+        return wordcloud.to_file("first_review.png")
     except ValueError:
         return None
 

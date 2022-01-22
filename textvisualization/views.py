@@ -38,6 +38,7 @@ class WordCloudView(View):
 
         # get wordcloud image
         wordcloud = show_wordcloud(data)
+        print("printiing wordcloud", wordcloud)
         context["wordcloud"] = wordcloud
         return render(request, self.template_name)
 
@@ -52,15 +53,19 @@ class WordCloudView(View):
     def post(self, request: HttpRequest) -> HttpResponse:
         context = self.get_context_data()
         form = DataForm(request.POST, request.FILES)
+        values = []
         if form.is_valid():
             user_file = form.cleaned_data["file"]
             read_file = read_file_by_file_extension(user_file)
             for _, row in read_file.iterrows():
                 print(row["access-to-basic-amenities-total-responses-2018-census-csv"])
-                return self.narration_chart_data(
-                    request,
-                    row["access-to-basic-amenities-total-responses-2018-census-csv"],
+                values.append(
+                    row["access-to-basic-amenities-total-responses-2018-census-csv"]
                 )
+            return self.narration_chart_data(
+                request,
+                values,
+            )
         else:
             form = DataForm(request.POST, request.FILES)
         return render(request, self.template_name, context)

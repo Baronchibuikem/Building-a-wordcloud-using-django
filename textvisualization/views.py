@@ -8,7 +8,6 @@ from django.contrib import messages
 from textvisualization.forms import DataForm
 from textvisualization.utils import (
     show_wordcloud,
-    create_text,
     read_file_by_file_extension,
 )
 

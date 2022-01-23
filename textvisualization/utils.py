@@ -37,8 +37,6 @@ def show_wordcloud(data: Optional[Union[List[str], str]]) -> Optional[Image.Imag
 
         image_64 = "data:image/png;base64," + urllib.parse.quote(string)
         return image_64
-
-        # return wordcloud.to_file("first_review.png")
     except ValueError:
         return None
 

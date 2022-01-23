@@ -1,9 +1,7 @@
-from uuid import UUID
 from django.shortcuts import render
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
 from django.views import View
-from django.contrib import messages
 
 from textvisualization.forms import DataForm
 from textvisualization.utils import (
@@ -14,7 +12,7 @@ from textvisualization.utils import (
 from typing import Any, Optional
 import pandas as pd
 
-# Create your views here.
+
 
 
 class WordCloudView(View):
@@ -33,13 +31,10 @@ class WordCloudView(View):
         """Use to display narration wordcloud and other charts."""
         context = self.get_context_data()
 
-        # read data from an excel sheet
-
         # get wordcloud image
         wordcloud = show_wordcloud(data)
-        print("printiing wordcloud", wordcloud)
         context["wordcloud"] = wordcloud
-        return render(request, self.template_name)
+        return render(request, self.template_name, context)
 
     def get(self, request: HttpRequest) -> HttpResponse:
 
@@ -57,13 +52,13 @@ class WordCloudView(View):
             user_file = form.cleaned_data["file"]
             read_file = read_file_by_file_extension(user_file)
             for _, row in read_file.iterrows():
-                print(row["access-to-basic-amenities-total-responses-2018-census-csv"])
                 values.append(
-                    row["access-to-basic-amenities-total-responses-2018-census-csv"]
+                    row["narration"]
                 )
+            converted_to_string = " ".join(values)
             return self.narration_chart_data(
                 request,
-                values,
+                converted_to_string,
             )
         else:
             form = DataForm(request.POST, request.FILES)

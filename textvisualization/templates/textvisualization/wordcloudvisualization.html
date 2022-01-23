@@ -1,24 +1,18 @@
-
-
-{% block content%}
-<div class="my-29 container mx-auto">
+<div>
     <h1>Hi welcome to data visualization</h1>
 
-    <div class="mx-auto h-32 my-10 bg-gray-400 w-3/5">
-        <div class="flex justify-center content-center flex-wrap h-28">
-            <form method="post" enctype="multipart/form-data" action="{{ form_action_url }}">
-                <div class="sm:mx-20">{{DataForm.file}}</div>
-                {% csrf_token %}
-                <button
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded md:w-56 sm:mt-2 sm:mx-20">
-                    Upload Document
-                </button>
-            </form>
-
-        </div>
+    <div>
+        <form method="post" enctype="multipart/form-data">
+            <div>{{DataForm.file}}</div>
+            {% csrf_token %}
+            <button>
+                Upload Document
+            </button>
+        </form>
     </div>
 
-    <img src={{wordcloud}}>
+    {% if wordcloud is not None %}
+        <img src="{{ wordcloud }}"> 
+    {% endif %}
    
 </div>
-{% endblock content %}

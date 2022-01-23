@@ -7,7 +7,7 @@ from django.forms import FileField, Form
 class DataForm(Form):
     file = FileField()
 
-    def clean_file(self):
+    def clean_file(self) -> str:
         """Process the file data."""
         data = self.cleaned_data["file"]
         extension = os.path.splitext(data.name)[1]

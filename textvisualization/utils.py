@@ -1,15 +1,14 @@
 import base64
 import io
-import urllib
-from typing import Any, Dict, List, Optional, Union
-from django.core.files.uploadedfile import UploadedFile
 import os
-
+import urllib.parse
+from typing import Any, List, Optional, Union
 
 import matplotlib.pyplot as plt
 import pandas as pd
+from django.core.files.uploadedfile import UploadedFile
 from PIL import Image
-from wordcloud import WordCloud, STOPWORDS
+from wordcloud import STOPWORDS, WordCloud
 
 stopwords = set(STOPWORDS)
 
@@ -35,7 +34,7 @@ def show_wordcloud(data: Optional[Union[List[str], str]]) -> Optional[Image.Imag
         image.seek(0)  # rewind the data
         string = base64.b64encode(image.read())
 
-        image_64 = "data:image/png;base64," + urllib.parse.quote(string)
+        image_64 = "data:image/png;base64," + urllib.parse.quote_plus(string)
         return image_64
     except ValueError:
         return None

@@ -1,18 +1,13 @@
-from django.shortcuts import render
+from typing import Any, Optional
+
+import pandas as pd
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse
+from django.shortcuts import render
 from django.views import View
 
 from textvisualization.forms import DataForm
-from textvisualization.utils import (
-    show_wordcloud,
-    read_file_by_file_extension,
-)
-
-from typing import Any, Optional
-import pandas as pd
-
-
+from textvisualization.utils import read_file_by_file_extension, show_wordcloud
 
 
 class WordCloudView(View):
@@ -51,15 +46,16 @@ class WordCloudView(View):
         if form.is_valid():
             user_file = form.cleaned_data["file"]
             read_file = read_file_by_file_extension(user_file)
-            for _, row in read_file.iterrows():
-                values.append(
-                    row["narration"]
+            if read_file is not None:
+                for _, row in read_file.iterrows():
+                    values.append(
+                        row["narration"]
+                    )
+                converted_to_string = " ".join(values)
+                return self.narration_chart_data(
+                    request,
+                    converted_to_string,
                 )
-            converted_to_string = " ".join(values)
-            return self.narration_chart_data(
-                request,
-                converted_to_string,
-            )
         else:
             form = DataForm(request.POST, request.FILES)
         return render(request, self.template_name, context)

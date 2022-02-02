@@ -26,3 +26,6 @@ jobs:
     - name: Run Tests
       run: |
         pytest tests
+    - name: Run MyPy
+      run: |
+        mypy .

@@ -28,4 +28,4 @@ jobs:
         pytest tests
     - name: Run MyPy
       run: |
-        mypy .
+        mypy textvisualization

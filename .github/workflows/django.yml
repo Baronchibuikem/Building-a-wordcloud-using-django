@@ -28,14 +28,7 @@ jobs:
       - name: Run MyPy
         run: |
           mypy textvisualization
-      # - name: Add remote origin
-      #   if: github.ref == 'refs/heads/master' && job.status == 'success' #action runs only if everything up to now is successful
-      #   run: |
-      #     git remote -a heroku https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/${{ secrets.HEROKU_APP_NAME }}.git
-      # - name: Deploy to Heroku
-      #   run: |
-      #     git push heroku HEAD:master -f
-      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This is the action which deploys to heroku
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: ${{ secrets.HEROKU_APP_NAME }} #Must be unique in Heroku

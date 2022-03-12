@@ -11,6 +11,7 @@ from PIL import Image
 from wordcloud import STOPWORDS, WordCloud
 
 stopwords = set(STOPWORDS)
+plt.switch_backend('Agg') # this will stop this error "Terminating app due to uncaught exception 'NSInternalInconsistencyException'"
 
 
 def show_wordcloud(data: Optional[Union[List[str], str]]) -> Optional[Image.Image]:
